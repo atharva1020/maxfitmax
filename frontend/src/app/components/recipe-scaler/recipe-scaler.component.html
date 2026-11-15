@@ -1,0 +1,59 @@
+<div class="recipe-scaler-card" *ngIf="recipe">
+  <h3 class="recipe-title">{{ recipe.title }}</h3>
+  
+  <!-- Interactive Target Yield Form Controls -->
+  <div class="scaler-controls">
+    <div class="control-group">
+      <label for="cookedWeightInput">Target Cooked Weight (g):</label>
+      <input type="number" 
+             id="cookedWeightInput"
+             class="weight-input"
+             [(ngModel)]="targetCookedWeight"
+             (ngModelChange)="onTargetWeightChange()"
+             min="50" 
+             max="5000" />
+    </div>
+
+    <div class="control-group">
+      <label>Quick Servings Adjuster:</label>
+      <div class="btn-group">
+        <button type="button" class="btn" (click)="updateByServings(1)">1 Serving</button>
+        <button type="button" class="btn active-btn" (click)="updateByServings(2)">2 Servings (Base)</button>
+        <button type="button" class="btn" (click)="updateByServings(4)">4 Servings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Scaled Ingredient List -->
+  <div class="ingredient-section">
+    <h4>Scaled Ingredients (Multiplier: {{ scaleMultiplier | number:'1.2-2' }}x)</h4>
+    <ul class="ingredient-list">
+      <li class="ingredient-item" *ngFor="let ing of recipe.ingredients">
+        <span class="ing-name">{{ ing.name }}</span>
+        <span class="ing-qty">
+          {{ ing.rawQuantityGrams | scaleIngredient:scaleMultiplier }} {{ ing.displayUnit }}
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Real-time Scaled Nutrition Values -->
+  <div class="scaled-nutrition-footer">
+    <div class="nutri-badge cal-badge">
+      <span class="val">{{ recipe.calculatedFinalMacros.caloriesPerServing * scaleMultiplier | number:'1.0-0' }}</span>
+      <span class="lbl">Calories (kcal)</span>
+    </div>
+    <div class="nutri-badge p-badge">
+      <span class="val">{{ recipe.calculatedFinalMacros.proteinPerServing * scaleMultiplier | number:'1.0-0' }}g</span>
+      <span class="lbl">Protein</span>
+    </div>
+    <div class="nutri-badge c-badge">
+      <span class="val">{{ recipe.calculatedFinalMacros.carbsPerServing * scaleMultiplier | number:'1.0-0' }}g</span>
+      <span class="lbl">Carbs</span>
+    </div>
+    <div class="nutri-badge f-badge">
+      <span class="val">{{ recipe.calculatedFinalMacros.fatsPerServing * scaleMultiplier | number:'1.0-0' }}g</span>
+      <span class="lbl">Fats</span>
+    </div>
+  </div>
+</div>

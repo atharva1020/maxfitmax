@@ -1,0 +1,63 @@
+<div class="macro-dashboard-card" *ngIf="targets && intake">
+  <div class="rings-container">
+    <svg class="progress-rings-svg" width="130" height="130" viewBox="0 0 130 130">
+      <g transform="rotate(-90 65 65)">
+        <!-- Calorie Ring (Radius 50) -->
+        <circle class="ring-bg" cx="65" cy="65" r="50" stroke="#1d1e22" stroke-width="8" fill="none" />
+        <circle class="ring-fg calorie-glow" cx="65" cy="65" r="50" stroke="#ff3b30" stroke-width="8" fill="none"
+                [attr.stroke-dasharray]="circumference"
+                [attr.stroke-dashoffset]="getStrokeOffset(intake.calories, targets.dailyCalories)"
+                stroke-linecap="round" />
+
+        <!-- Protein Ring (Radius 38) -->
+        <circle class="ring-bg" cx="65" cy="65" r="38" stroke="#1d1e22" stroke-width="8" fill="none" />
+        <circle class="ring-fg protein-glow" cx="65" cy="65" r="38" stroke="#34c759" stroke-width="8" fill="none"
+                [attr.stroke-dasharray]="2 * 3.14159 * 38"
+                [attr.stroke-dashoffset]="getStrokeOffset(intake.protein, targets.macros.proteinGrams)"
+                stroke-linecap="round" />
+
+        <!-- Carbs Ring (Radius 26) -->
+        <circle class="ring-bg" cx="65" cy="65" r="26" stroke="#1d1e22" stroke-width="8" fill="none" />
+        <circle class="ring-fg carbs-glow" cx="65" cy="65" r="26" stroke="#007aff" stroke-width="8" fill="none"
+                [attr.stroke-dasharray]="2 * 3.14159 * 26"
+                [attr.stroke-dashoffset]="getStrokeOffset(intake.carbs, targets.macros.carbsGrams)"
+                stroke-linecap="round" />
+      </g>
+    </svg>
+
+    <div class="central-stats">
+      <span class="cal-value">{{ targets.dailyCalories - intake.calories }}</span>
+      <span class="cal-lbl">kcal left</span>
+    </div>
+  </div>
+
+  <div class="macro-breakdown-metrics">
+    <!-- Calories -->
+    <div class="metric-row cal-metric">
+      <span class="color-dot" style="background: #ff3b30;"></span>
+      <span class="label">Calories</span>
+      <span class="value">{{ intake.calories }} / {{ targets.dailyCalories }} kcal</span>
+    </div>
+    
+    <!-- Protein -->
+    <div class="metric-row protein-metric">
+      <span class="color-dot" style="background: #34c759;"></span>
+      <span class="label">Protein</span>
+      <span class="value">{{ intake.protein }} / {{ targets.macros.proteinGrams }}g</span>
+    </div>
+
+    <!-- Carbs -->
+    <div class="metric-row carbs-metric">
+      <span class="color-dot" style="background: #007aff;"></span>
+      <span class="label">Carbs</span>
+      <span class="value">{{ intake.carbs }} / {{ targets.macros.carbsGrams }}g</span>
+    </div>
+
+    <!-- Fats -->
+    <div class="metric-row fats-metric">
+      <span class="color-dot" style="background: #ffcc00;"></span>
+      <span class="label">Fats</span>
+      <span class="value">{{ intake.fats }} / {{ targets.macros.fatsGrams }}g</span>
+    </div>
+  </div>
+</div>

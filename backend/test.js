@@ -1,0 +1,145 @@
+const assert = require('assert');
+const { calculateTargetNutrition } = require('./src/services/biometricService');
+const { calculateRecipeMacros } = require('./src/services/macroEngine');
+
+// Mock NutritionalDB Model for testing calculateRecipeMacros
+const NutritionalDB = require('./src/models/NutritionalDB');
+
+console.log('--- STARTING MACROREEL BACKEND ENGINE TESTS ---');
+
+// Test 1: Mifflin-St Jeor Biometrics Engine (Male - Cut)
+try {
+  const maleCut = calculateTargetNutrition({
+    age: 25,
+    sex: 'male',
+    heightCm: 180,
+    weightKg: 80,
+    activityLevel: 1.55, // Moderately active
+    goal: 'cut'
+  });
+
+  console.log('Biometric output (Male, Cut):', maleCut);
+  
+  // BMR = 10 * 80 + 6.25 * 180 - 5 * 25 + 5 = 800 + 1125 - 125 + 5 = 1805
+  // TDEE = 1805 * 1.55 = 2797.75 => 2798
+  // DailyCalories = TDEE - 500 = 2298
+  // Protein = 2.2 * 80 = 176g
+  // Protein Kcal = 176 * 4 = 704 kcal
+  // Fats = 2298 * 0.25 = 574.5 kcal => 574.5 / 9 = 63.8g => 64g
+  // Fats Kcal = 64 * 9 = 576 kcal
+  // Carbs Kcal = 2298 - (704 + 576) = 1018 kcal => 1018 / 4 = 254.5g => 255g
+  
+  assert.strictEqual(maleCut.bmr, 1805);
+  assert.strictEqual(maleCut.tdee, 2798);
+  assert.strictEqual(maleCut.dailyCalories, 2298);
+  assert.strictEqual(maleCut.macros.proteinGrams, 176);
+  assert.strictEqual(maleCut.macros.fatsGrams, 64);
+  console.log('✓ Test 1 Passed: Mifflin-St Jeor Male Cut targets calculated correctly.');
+} catch (err) {
+  console.error('✗ Test 1 Failed:', err);
+  process.exit(1);
+}
+
+// Test 2: Mifflin-St Jeor Biometrics Engine (Female - Bulk)
+try {
+  const femaleBulk = calculateTargetNutrition({
+    age: 30,
+    sex: 'female',
+    heightCm: 165,
+    weightKg: 60,
+    activityLevel: 1.375, // Lightly active
+    goal: 'bulk'
+  });
+
+  console.log('Biometric output (Female, Bulk):', femaleBulk);
+
+  // BMR = 10 * 60 + 6.25 * 165 - 5 * 30 - 161 = 600 + 1031.25 - 150 - 161 = 1320.25 => 1320
+  // TDEE = 1320.25 * 1.375 = 1815.34 => 1815
+  // DailyCalories = TDEE + 500 = 2315
+  // Protein = 2.2 * 60 = 132g (Protein Kcal = 528 kcal)
+  // Fats = 2315 * 0.25 = 578.75 kcal => 578.75 / 9 = 64.3g => 64g (Fats Kcal = 576 kcal)
+  // Carbs Kcal = 2315 - (528 + 576) = 1211 kcal => 1211 / 4 = 302.75g => 303g
+
+  assert.strictEqual(femaleBulk.bmr, 1320);
+  assert.strictEqual(femaleBulk.tdee, 1815);
+  assert.strictEqual(femaleBulk.dailyCalories, 2315);
+  assert.strictEqual(femaleBulk.macros.proteinGrams, 132);
+  assert.strictEqual(femaleBulk.macros.fatsGrams, 64);
+  console.log('✓ Test 2 Passed: Mifflin-St Jeor Female Bulk targets calculated correctly.');
+} catch (err) {
+  console.error('✗ Test 2 Failed:', err);
+  process.exit(1);
+}
+
+// Test 3: Macro calculations with mocked database items
+async function testRecipeCalculations() {
+  try {
+    // Override NutritionalDB findById
+    const originalFindById = NutritionalDB.findById;
+    NutritionalDB.findById = async function(id) {
+      if (id.toString() === '507f1f77bcf86cd799439011') {
+        return {
+          _id: id,
+          standardName: 'Mock Chicken Breast',
+          dietaryFlags: ['is_animal_product'],
+          waterContentPercentage: 75,
+          lipidAbsorptionFactor: 0.04,
+          baseMacrosPer100g: { calories: 120, protein: 26, carbs: 0, fats: 1.5 }
+        };
+      }
+      if (id.toString() === '507f1f77bcf86cd799439012') {
+        return {
+          _id: id,
+          standardName: 'Mock Olive Oil',
+          dietaryFlags: [],
+          waterContentPercentage: 0.1,
+          lipidAbsorptionFactor: 1.0,
+          baseMacrosPer100g: { calories: 884, protein: 0, carbs: 0, fats: 100 }
+        };
+      }
+      return null;
+    };
+
+    // Frying calculation
+    const friedResult = await calculateRecipeMacros([
+      { ingredientId: '507f1f77bcf86cd799439011', rawQuantityGrams: 200 }, // Mock Chicken
+      { ingredientId: '507f1f77bcf86cd799439012', rawQuantityGrams: 10 }   // Mock Oil
+    ], 'deep_fried', 1);
+
+    console.log('Fried Recipe macro output:', friedResult);
+
+    // Raw totals:
+    // Chicken: 200g -> cal: 240, protein: 52, carbs: 0, fats: 3
+    // Oil: 10g -> cal: 88.4, protein: 0, carbs: 0, fats: 10
+    // Total raw weight: 210g
+    // Oil absorption:
+    // Chicken: 200g * 0.04 = 8g oil absorbed
+    // Oil: 10g * 1.00 = 10g oil absorbed
+    // Total oil absorbed = 18g
+    // Absorbed oil calories = 18 * 9 = 162 kcal, fats = 18g
+    // Final calories: 240 + 88.4 + 162 = 490.4 kcal => 490 kcal
+    // Final fats: 3 + 10 + 18 = 31g
+    // Final protein: 52g
+    // Final carbs: 0g (from raw) + 0 (from oil) = 0g
+    // Auto tags: contains_animal_products, is_halal, hindu_no_beef_compliant
+
+    assert.ok(friedResult.totalCookedWeightGrams > 210); // weight increases due to absorbed oil
+    assert.strictEqual(friedResult.proteinPerServing, 52);
+    assert.strictEqual(friedResult.fatsPerServing, 31);
+    assert.ok(friedResult.autoGeneratedDietaryTags.includes('contains_animal_products'));
+    assert.ok(friedResult.autoGeneratedDietaryTags.includes('is_halal'));
+    assert.ok(friedResult.autoGeneratedDietaryTags.includes('hindu_no_beef_compliant'));
+
+    // Restore original method
+    NutritionalDB.findById = originalFindById;
+
+    console.log('✓ Test 3 Passed: Heat calculation recipe engine computes macros correctly.');
+    console.log('--- ALL BACKEND TESTS PASSED ---');
+    process.exit(0);
+  } catch (err) {
+    console.error('✗ Test 3 Failed:', err);
+    process.exit(1);
+  }
+}
+
+testRecipeCalculations();

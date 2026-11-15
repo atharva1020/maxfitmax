@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MacroReel - Premium Health Social Workspace</title>
+  <!-- Google Fonts: Grand Hotel (Branding), Outfit, and Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Instagram Light Mode Canvas */
+      --bg-global: #fafafa;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --bg-input: #efefef;
+      --text-main: #262626;
+      --text-sub: #8e8e8e;
+      --primary: #0095f6; /* Accent blue */
+      --border-color: #dbdbdb;
+      
+      /* Instagram Gradient Ring Mesh */
+      --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      
+      /* Macro Ring Colors */
+      --color-cal: #ff3b30;
+      --color-protein: #4cd964;
+      --color-carbs: #007aff;
+      --color-fats: #ffcc00;
+
+      --spring-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --transition-speed: 250ms;
+    }
+
+    [data-theme="dark"] {
+      /* Instagram Dark Mode Canvas */
+      --bg-global: #000000;
+      --bg-surface: #000000;
+      --bg-card: #000000;
+      --bg-input: #121212;
+      --text-main: #f5f5f5;
+      --text-sub: #a8a8a8;
+      --primary: #0095f6;
+      --border-color: #262626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-global);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      transition: background-color var(--transition-speed) var(--spring-easing);
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 10px;
+    }
+
+    /* --- ONBOARDING STAGE --- */
+    .view-onboarding {
+      max-width: 460px;
+      width: 100%;
+      margin: 60px auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 1px; /* Instagram classic block style */
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .onboard-header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .onboard-logo {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 3.5rem;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+    .onboard-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+    .onboard-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .form-group label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+    }
+    .form-group input, .form-group select {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 3px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: #a8a8a8;
+    }
+
+    .primary-btn {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      text-align: center;
+    }
+    .primary-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Onboarding Splash */
+    .calculating-splash {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-global);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+    .calculating-splash.active {
+      display: flex;
+    }
+
+    /* --- DESKTOP APP GRAPH GRID --- */
+    .desktop-layout {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Left Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      border-right: 1px solid var(--border-color);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1000;
+      background: var(--bg-surface);
+    }
+    .sidebar-logo {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 2.8rem;
+      color: var(--text-main);
+      margin-bottom: 30px;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color var(--transition-speed);
+    }
+    .menu-item svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      transition: transform 0.2s var(--spring-easing);
+    }
+    .menu-item:hover {
+      background-color: var(--bg-input);
+    }
+    .menu-item:hover svg {
+      transform: scale(1.05);
+    }
+    .menu-item.active {
+      font-weight: 700;
+    }
+    .menu-item.active svg {
+      stroke-width: 2.5;
+    }
+
+    /* Main Scroll Panel */
+    .main-content {
+      margin-left: 240px;
+      margin-right: 320px;
+      padding: 40px 30px;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Stories Tray (Avatars with Gradient Rings) */
+    .stories-tray {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 10px 0 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 30px;
+      scrollbar-width: none;
+    }
+    .stories-tray::-webkit-scrollbar {
+      display: none;
+    }
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .story-ring {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: var(--insta-gradient);
+      padding: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .story-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 2px solid var(--bg-surface);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+    }
+    .story-lbl {
+      font-size: 0.75rem;
+      color: var(--text-main);
+      max-width: 74px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Dynamic View Panels */
+    .content-panel {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+    .content-panel.active {
+      display: flex;
+    }
+
+    /* --- HOME FEED REELS --- */
+    .feed-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Post Card Layout matching Instagram specification */
+    .instagram-post-card {
+      width: 100%;
+      max-width: 470px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+    }
+    .post-creator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .post-creator-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--insta-gradient);
+      padding: 1.5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .post-creator-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--bg-surface);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--text-main);
+    }
+    .post-username {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .post-username:hover {
+      text-decoration: underline;
+    }
+
+    /* Media Frame 4:5 / 1:1 */
+    .post-media-frame {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .post-media-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Heart Burst Overlay Animation */
+    .heart-burst-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 5rem;
+      color: #ffffff;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.6s var(--spring-easing);
+    }
+    .heart-burst-overlay.burst {
+      transform: translate(-50%, -50%) scale(1.2);
+      opacity: 1;
+    }
+
+    /* HUD Macro Overlay */
+    .post-macro-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      z-index: 20;
+    }
+
+    /* Action bar directly below photo */
+    .post-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+    }
+    .post-action-left {
+      display: flex;
+      gap: 16px;
+    }
+    .post-icon-btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s var(--spring-easing);
+    }
+    .post-icon-btn:hover {
+      transform: scale(1.1);
+    }
+    .post-icon-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    .post-icon-btn.liked svg {
+      fill: #ed4956;
+      stroke: #ed4956;
+    }
+    .post-icon-btn.saved svg {
+      fill: var(--text-main);
+    }
+
+    .post-caption-box {
+      padding: 0 14px 14px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+    .post-likes-count {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .post-desc {
+      color: var(--text-main);
+    }
+    .post-desc span {
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    /* --- CREATOR PROFILE PORTFOLIO GRID --- */
+    .profile-card {
+      display: flex;
+      gap: 40px;
+      padding: 10px 10px 30px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    .profile-avatar-wrapper {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      padding: 4px;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .profile-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg-input);
+      color: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+    }
+    .profile-details-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .profile-username-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .profile-stats-row {
+      display: flex;
+      gap: 40px;
+      font-size: 0.95rem;
+    }
+    .profile-stat-item span {
+      font-weight: 700;
+    }
+    .profile-stars {
+      display: flex;
+      gap: 2px;
+      color: #fbbf24;
+      font-size: 0.9rem;
+    }
+
+    /* Highlights Section */
+    .highlights-row {
+      display: flex;
+      gap: 24px;
+      padding: 10px 0 24px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 30px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .highlights-row::-webkit-scrollbar {
+      display: none;
+    }
+    .highlight-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .highlight-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .highlight-lbl {
+      font-size: 0.75rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* 3-Column Square Grid */
+    .profile-grid-tabs {
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid var(--border-color);
+      margin-bottom: 16px;
+    }
+    .grid-tab-btn {
+      background: none;
+      border: none;
+      padding: 16px 24px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .grid-tab-btn.active {
+      color: var(--text-main);
+      border-top: 1px solid var(--text-main);
+      margin-top: -1px;
+    }
+    
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px; /* classic 1px - 4px gap */
+    }
+    .portfolio-grid-item {
+      aspect-ratio: 1 / 1;
+      background: var(--bg-input);
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .portfolio-grid-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .portfolio-grid-item:hover .portfolio-grid-item-overlay {
+      opacity: 1;
+    }
+    .portfolio-grid-item-cover {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-glow) 0%, rgba(244,63,94,0.15) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 14px;
+    }
+    .portfolio-grid-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .portfolio-grid-item-cover-stats {
+      font-size: 0.7rem;
+      margin-top: 6px;
+      color: var(--text-sub);
+    }
+
+    /* --- STEP-BY-STEP RECIPE INSTRUCTION VIEW --- */
+    .recipe-screen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    .recipe-columns {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 30px;
+    }
+    .recipe-column-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+    }
+    .recipe-column-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    .ingredient-list-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bg-input);
+      font-size: 0.9rem;
+    }
+    .step-timeline-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .step-desc-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .step-uses-tag {
+      font-size: 0.7rem;
+      color: var(--primary);
+      background: var(--primary-glow);
+      padding: 2px 6px;
+      border-radius: 4px;
+      width: fit-content;
+      font-weight: 700;
+    }
+
+    /* Right Panel (Targets concentrics, hydrations) */
+    .right-panel {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 320px;
+      border-left: 1px solid var(--border-color);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 1000;
+      background: var(--bg-surface);
+      overflow-y: auto;
+    }
+
+    /* Concentric rings dashboard widget */
+    .rings-widget-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .rings-svg-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .rings-svg-container svg {
+      transform: rotate(-90deg);
+    }
+    .central-ring-value {
+      position: absolute;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+    .central-ring-value .val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .central-ring-value .lbl {
+      font-size: 0.6rem;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .hud-stats-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hud-stat-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .hud-stat-item .lbl {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-sub);
+    }
+    .hud-stat-item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Water log card */
+    .water-logger-card {
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .water-info-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .water-icon-circle {
+      background: rgba(0,149,246,0.1);
+      color: var(--primary);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .water-plus-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    /* --- SHIMMER SKELETON LOADERS --- */
+    .shimmer-loader {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 470px;
+      margin: 0 auto;
+    }
+    .shimmer-element {
+      background: linear-gradient(90deg, var(--bg-input) 25%, var(--border-color) 50%, var(--bg-input) 75%);
+      background-size: 200% 100%;
+      animation: shimmer-swipe 1.5s infinite linear;
+      border-radius: 4px;
+    }
+    @keyframes shimmer-swipe {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* --- DIRECT MESSAGES DRAWER PANEL --- */
+    .dms-drawer-panel {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: -340px;
+      width: 320px;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-color);
+      z-index: 2500;
+      transition: right var(--transition-speed) var(--spring-easing);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+    }
+    .dms-drawer-panel.active {
+      right: 0;
+    }
+    .dms-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dms-chats-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .chat-user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .chat-user-row:hover {
+      background-color: var(--bg-input);
+    }
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      color: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= ONBOARDING LANDING STAGE ================= -->
+  <div class="view-onboarding" id="onboardingView">
+    <div class="onboard-header">
+      <div class="onboard-logo">MacroReel</div>
+      <div class="onboard-title">Calculate Biometric Targets</div>
+    </div>
+
+    <div class="onboard-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Age (years)</label>
+          <input type="number" id="obAge" value="25" min="15" max="100">
+        </div>
+        <div class="form-group">
+          <label>Biological Sex</label>
+          <select id="obSex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="obHeight" value="180" min="100" max="250">
+        </div>
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="obWeight" value="80" min="30" max="200">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Weekly Activity Multiplier</label>
+        <select id="obActivity">
+          <option value="1.2">Sedentary (No workouts)</option>
+          <option value="1.375">Lightly Active (1-3 workouts)</option>
+          <option value="1.55" selected>Moderately Active (3-5 workouts)</option>
+          <option value="1.725">Very Active (6-7 heavy workouts)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Primary Fitness Goal</label>
+        <select id="obGoal">
+          <option value="cut" selected>Cut (Lose fat -500 kcal)</option>
+          <option value="maintain">Maintain (Balance TDEE)</option>
+          <option value="bulk">Bulk (Gain muscle +500 kcal)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Strict Religious/Dietary Masks</label>
+        <select id="obDietMode">
+          <option value="none">None (Exclude nothing)</option>
+          <option value="hindu_no_beef">Hindu (Strictly NO beef)</option>
+          <option value="vegan">Vegan (Plant-based only)</option>
+          <option value="vegetarian">Vegetarian (No meat/fish)</option>
+          <option value="halal">Halal (Strict compliance)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="primary-btn" onclick="submitOnboarding()">Start Discovering</button>
+  </div>
+
+  <!-- Onboarding Spinner Screen -->
+  <div class="calculating-splash" id="calcSplash">
+    <div class="spinner"></div>
+    <div style="font-family:'Outfit';font-weight:700;font-size:1.4rem;color:var(--primary)">
+      Calculating Daily Macros...
+    </div>
+    <div style="font-size:0.85rem;color:var(--text-sub)">Applying Mifflin-St Jeor Equation</div>
+  </div>
+
+  <!-- ================= CORE DESKTOP GRAPH PLATFORM ================= -->
+  <div class="desktop-layout" id="mainAppView">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <a href="#" class="sidebar-logo" onclick="switchNav('viewFeed', document.querySelectorAll('.menu-item')[0])">MacroReel</a>
+        <nav class="sidebar-menu">
+          <a class="menu-item active" onclick="switchNav('viewFeed', this)">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>Home Feed</span>
+          </a>
+          <a class="menu-item" onclick="switchNav('viewExplore', this)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span>Explore Foods</span>
+          </a>
+          <a class="menu-item" onclick="switchNav('viewTracker', this)">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+            <span>Meal Tracker</span>
+          </a>
+          <a class="menu-item" onclick="toggleDMsDrawer()">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>Messages</span>
+          </a>
+          <a class="menu-item" id="sidebarProfileBtn" onclick="openCreatorProfile('@MyProfile')">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>My Profile</span>
+          </a>
+          <a class="menu-item" onclick="resetToOnboarding()">
+            <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M6.34 17.66l-2.83 2.83M19.07 4.93l-2.83 2.83"/></svg>
+            <span>Re-Onboard</span>
+          </a>
+        </nav>
+      </div>
+
+      <div>
+        <button class="primary-btn" onclick="toggleTheme()" style="width:100%;background:var(--bg-input);border:1px solid var(--border-color);color:var(--text-main);font-weight:600;">Toggle Theme</button>
+      </div>
+    </aside>
+
+    <!-- CENTER DYNAMIC SCREEN -->
+    <main class="main-content" id="mainContent">
+      
+      <!-- Followed Profiles Stories tray -->
+      <div class="stories-tray" id="storiesTrayContainer">
+        <!-- populated by JS -->
+      </div>
+
+      <!-- Shimmer Placeholder loader -->
+      <div class="shimmer-loader" id="shimmerLoader">
+        <div class="shimmer-element" style="height:36px;width:150px;margin-bottom:12px;"></div>
+        <div class="shimmer-element" style="height:350px;width:100%;border-radius:12px;"></div>
+      </div>
+
+      <!-- VIEW 1: HOME FEED -->
+      <div class="content-panel active" id="viewFeed">
+        <div class="feed-container" id="feedPostsContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- VIEW 2: EXPLORE SEARCH -->
+      <div class="content-panel" id="viewExplore">
+        <div class="explore-search-container">
+          <h2 style="font-family:'Outfit';margin-bottom:14px">Search verified ingredients</h2>
+          <div class="search-input-wrapper">
+            <svg style="width:18px;height:18px;stroke:var(--text-sub);fill:none;stroke-width:2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" placeholder="Search foods..." oninput="searchIngredients(this.value)">
+          </div>
+        </div>
+
+        <div class="diet-filters-bar">
+          <span style="font-weight:700">Verified Raw Items</span>
+          <div class="filter-btn-group">
+            <button class="filter-chip active" id="chipAllFoods" onclick="filterExploreTags('all')">All</button>
+            <button class="filter-chip" id="chipVegFoods" onclick="filterExploreTags('vegetarian')">Vegetarian</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:16px" id="exploreIngredientsGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- VIEW 3: TRACKER LOGS -->
+      <div class="content-panel" id="viewTracker">
+        <h2 style="font-family:'Outfit';margin-bottom:20px">Daily Tracker Slots</h2>
+        <div style="display:flex;flex-direction:column;gap:16px" id="trackerMealSlotsList">
+          <!-- Meal slots will list here -->
+        </div>
+      </div>
+
+      <!-- VIEW 4: CREATOR PROFILE SCREEN -->
+      <div class="content-panel" id="viewProfile">
+        <div class="profile-container" id="profilePageContainer">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- VIEW 5: RECIPE TIMELINE SCREEN -->
+      <div class="content-panel" id="viewRecipeDetails">
+        <div class="recipe-details-view" id="recipeDetailsContainer">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT FIXED PANEL -->
+    <aside class="right-panel">
+      <div style="font-family:'Outfit';font-weight:800;font-size:1.2rem">Daily HUD Targets</div>
+
+      <!-- apple watch style concentric rings -->
+      <div class="rings-widget-card">
+        <div class="rings-svg-container">
+          <svg width="120" height="120" viewBox="0 0 100 100">
+            <!-- Calorie Ring (Red, Radius 42) -->
+            <circle cx="50" cy="50" r="42" stroke="var(--border-color)" stroke-width="7" fill="none"/>
+            <circle id="rightRingCal" cx="50" cy="50" r="42" stroke="#ff3b30" stroke-width="7" fill="none"
+                    stroke-linecap="round" stroke-dasharray="263.89" stroke-dashoffset="130"/>
+            
+            <!-- Protein Ring (Green, Radius 32) -->
+            <circle cx="50" cy="50" r="32" stroke="var(--border-color)" stroke-width="7" fill="none"/>
+            <circle id="rightRingProtein" cx="50" cy="50" r="32" stroke="#4cd964" stroke-width="7" fill="none"
+                    stroke-linecap="round" stroke-dasharray="201.06" stroke-dashoffset="100"/>
+            
+            <!-- Carbs Ring (Blue, Radius 22) -->
+            <circle cx="50" cy="50" r="22" stroke="var(--border-color)" stroke-width="7" fill="none"/>
+            <circle id="rightRingCarbs" cx="50" cy="50" r="22" stroke="#007aff" stroke-width="7" fill="none"
+                    stroke-linecap="round" stroke-dasharray="138.23" stroke-dashoffset="70"/>
+          </svg>
+          <div class="central-ring-value">
+            <span class="val" id="rightTxtRemainingKcal">948</span>
+            <span class="lbl">kcal left</span>
+          </div>
+        </div>
+
+        <div class="hud-stats-list">
+          <div class="hud-stat-item">
+            <span class="lbl"><span class="dot" style="background:#ff3b30"></span>Calories</span>
+            <span class="val" id="rightTxtCal">1250 / 2298 kcal</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="lbl"><span class="dot" style="background:#4cd964"></span>Protein</span>
+            <span class="val" id="rightTxtProtein">95 / 176g</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="lbl"><span class="dot" style="background:#007aff"></span>Carbs</span>
+            <span class="val" id="rightTxtCarbs">140 / 254g</span>
+          </div>
+          <div class="hud-stat-item">
+            <span class="lbl"><span class="dot" style="background:#ffcc00"></span>Fats</span>
+            <span class="val" id="rightTxtFats">35 / 64g</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water progress card -->
+      <div class="water-logger-card">
+        <div class="water-info-left">
+          <div class="water-icon-circle">
+            <svg style="width:16px;height:16px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <div>
+            <div class="water-title">Hydration</div>
+            <div class="water-progress" id="rightTxtWater">1200 / 3000 mL</div>
+          </div>
+        </div>
+        <button class="water-plus-btn" onclick="addWater()">+</button>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ================= MODAL: DETAILED SCALE BREAKDOWN ================= -->
+  <div class="modal-overlay" id="scaleMacrosModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="scaleModalRecipeTitle">Detailed Macro Breakdown</h3>
+        <button class="close-btn" onclick="closeModal('scaleMacrosModal')">&times;</button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-sub)">Adjust portion size to scale all micronutrients dynamically.</p>
+
+      <div style="background:var(--bg-input);padding:14px;border-radius:6px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:700">
+          <span>PORTION WEIGHT (GRAMS)</span>
+          <span style="color:var(--primary)" id="scaleSliderLabelVal">400g</span>
+        </div>
+        <input type="range" id="scaleModalSlider" min="50" max="1500" value="400" oninput="onScaleSliderChange()" style="accent-color:var(--primary);cursor:pointer;width:100%">
+      </div>
+
+      <div class="macros-scale-grid">
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Calories</span>
+          <span class="macro-bar-val" style="color:var(--color-cal)" id="scCal">390 kcal</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Proteins</span>
+          <span class="macro-bar-val" style="color:var(--color-protein)" id="scProtein">38g</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Carbohydrates</span>
+          <span class="macro-bar-val" style="color:var(--color-carbs)" id="scCarb">45g</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Total Fats</span>
+          <span class="macro-bar-val" style="color:var(--color-fats)" id="scFats">6g</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Sugar content</span>
+          <span class="macro-bar-val" id="scSugar">4g</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Dietary Fiber</span>
+          <span class="macro-bar-val" id="scFiber">6g</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Sodium</span>
+          <span class="macro-bar-val" id="scSodium">320mg</span>
+        </div>
+        <div class="macro-bar-row">
+          <span class="macro-bar-label">Potassium</span>
+          <span class="macro-bar-val" id="scPotassium">450mg</span>
+        </div>
+      </div>
+
+      <button class="primary-btn" onclick="logScaledItem()">Log Portion to Tracker</button>
+    </div>
+  </div>
+
+  <!-- ================= CHAT MESSAGES DRAWER PANEL ================= -->
+  <div class="dms-drawer-panel" id="dmsDrawerPanel">
+    <div class="dms-header">
+      <h3 style="font-family:'Outfit';font-weight:800;font-size:1.1rem">Direct Messages</h3>
+      <button class="close-btn" onclick="toggleDMsDrawer()">&times;</button>
+    </div>
+    <div class="dms-chats-list">
+      <div class="chat-user-row" onclick="startDirectChat('@ChefDietician_Alex')">
+        <div class="chat-avatar">A</div>
+        <div>
+          <div style="font-weight:700;font-size:0.85rem">@ChefDietician_Alex</div>
+          <div style="font-size:0.75rem;color:var(--text-sub)">Active 5m ago</div>
+        </div>
+      </div>
+      <div class="chat-user-row" onclick="startDirectChat('@BulkGains_Greg')">
+        <div class="chat-avatar">G</div>
+        <div>
+          <div style="font-weight:700;font-size:0.85rem">@BulkGains_Greg</div>
+          <div style="font-size:0.75rem;color:var(--text-sub)">Active 12m ago</div>
+        </div>
+      </div>
+      <div class="chat-user-row" onclick="startDirectChat('@HealthyEats_Sam')">
+        <div class="chat-avatar">S</div>
+        <div>
+          <div style="font-weight:700;font-size:0.85rem">@HealthyEats_Sam</div>
+          <div style="font-size:0.75rem;color:var(--text-sub)">Active 1h ago</div>
+        </div>
+      </div>
+    </div>
+    <!-- Chat log window -->
+    <div id="directChatBox" style="display:none;flex-direction:column;height:55%;border-top:1px solid var(--border-color);padding:14px;gap:10px">
+      <div style="font-weight:700;font-size:0.85rem;color:var(--primary)" id="chatBoxUsername">@ChefDietician_Alex</div>
+      <div style="flex:1;overflow-y:auto;background:var(--bg-input);padding:10px;border-radius:6px;font-size:0.8rem;display:flex;flex-direction:column;gap:8px" id="chatBoxMessagesList">
+        <!-- Message list bubbles -->
+      </div>
+      <div style="display:flex;gap:6px">
+        <input type="text" placeholder="Message..." id="chatInputMessage" style="flex:1;border:1px solid var(--border-color);background:var(--bg-global);color:var(--text-main);padding:8px;border-radius:4px;outline:none;font-size:0.8rem" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="primary-btn" style="padding:8px 12px;font-size:0.8rem" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- DATABASE STATE ---
+    const creatorsDB = {
+      "@ChefDietician_Alex": {
+        username: "@ChefDietician_Alex",
+        avatarLetter: "A",
+        bio: "Board-Certified Registered Dietician. Specializing in macro-friendly sweet treats and functional cooking science.",
+        posts: 18,
+        followers: "124.5k",
+        rating: 4.8,
+        highlights: ["Sweet Prep", "Low Carb", "Pancakes"],
+        recipesList: [
+          {
+            id: "rec_001",
+            title: "Fluffy High Protein Pancake Tower",
+            baseCalories: 390,
+            baseProtein: 38,
+            baseCarbs: 45,
+            baseFats: 6,
+            sugar: 4,
+            fiber: 6,
+            sodium: 320,
+            potassium: 450,
+            baseWeight: 400,
+            tags: ["is_vegetarian", "is_halal"],
+            ingredients: [
+              { name: "Oat Flour (Raw)", quantity: 60, unit: "g" },
+              { name: "Whey Protein Powder", quantity: 30, unit: "g" },
+              { name: "Egg Whites (Raw)", quantity: 120, unit: "g" },
+              { name: "Fat Free Greek Yogurt", quantity: 100, unit: "g" }
+            ],
+            steps: [
+              { order: 1, instruction: "Whisk 60g Oat Flour, 30g Whey Protein Powder, 120g Egg Whites, and 100g Greek Yogurt into a smooth batter.", ingLabel: "Oats, protein, eggs, yogurt" },
+              { order: 2, instruction: "Heat a skillet and pour batter into 4 thick rounds. Cook until bubbles rise, then flip.", ingLabel: "Skillet oil spray" },
+              { order: 3, instruction: "Stack into a tower and top with zero-calorie maple syrup.", ingLabel: "Maple syrup (Optional)" }
+            ]
+          },
+          {
+            id: "rec_004",
+            title: "Triple Chocolate Protein Mug Cake",
+            baseCalories: 280,
+            baseProtein: 30,
+            baseCarbs: 22,
+            baseFats: 8,
+            sugar: 2,
+            fiber: 5,
+            sodium: 290,
+            potassium: 380,
+            baseWeight: 200,
+            tags: ["is_vegetarian", "is_halal"],
+            ingredients: [
+              { name: "Chocolate Whey Protein", quantity: 30, unit: "g" },
+              { name: "Cocoa Powder", quantity: 10, unit: "g" },
+              { name: "Almond Milk", quantity: 80, unit: "ml" },
+              { name: "Dark Chocolate Chips", quantity: 10, unit: "g" }
+            ],
+            steps: [
+              { order: 1, instruction: "Mix 30g Chocolate Whey, 10g Cocoa Powder, and 80ml Almond Milk in a mug.", ingLabel: "Whey, cocoa, milk" },
+              { order: 2, instruction: "Fold in 10g Dark Chocolate Chips.", ingLabel: "Chocolate chips" },
+              { order: 3, instruction: "Microwave for 55 seconds until center is slightly gooey.", ingLabel: "Microwave" }
+            ]
+          }
+        ]
+      },
+      "@BulkGains_Greg": {
+        username: "@BulkGains_Greg",
+        avatarLetter: "G",
+        bio: "Bulk phase prep expert. Helping you hit massive macro ceilings using clean, nutrient-dense ingredients.",
+        posts: 24,
+        followers: "242.0k",
+        rating: 4.7,
+        highlights: ["Bulk Prep", "Meat Bowls", "Heavy Shakes"],
+        recipesList: [
+          {
+            id: "rec_002",
+            title: "Garlic Butter Chicken Thigh & Potatoes",
+            baseCalories: 610,
+            baseProtein: 48,
+            baseCarbs: 52,
+            baseFats: 22,
+            sugar: 3,
+            fiber: 8,
+            sodium: 480,
+            potassium: 610,
+            baseWeight: 550,
+            tags: ["contains_animal_products", "is_halal", "hindu_no_beef_compliant"],
+            ingredients: [
+              { name: "Chicken Breast (Raw)", quantity: 300, unit: "g" },
+              { name: "Potatoes (Raw)", quantity: 200, unit: "g" },
+              { name: "Olive Oil", quantity: 15, unit: "g" },
+              { name: "Butter (Dairy)", quantity: 10, unit: "g" },
+              { name: "Garlic Cloves", quantity: 15, unit: "g" }
+            ],
+            steps: [
+              { order: 1, instruction: "Dice 300g Chicken Breast and 200g Potatoes into cubes.", ingLabel: "Chicken, potatoes" },
+              { order: 2, instruction: "Toss potatoes with 10g Olive Oil and roast/bake at 200C for 20 minutes.", ingLabel: "Potatoes, olive oil" },
+              { order: 3, instruction: "Heat remaining 5g Olive Oil and 10g Butter in a pan. Sauté 15g Garlic Cloves and sear chicken breast until fully cooked.", ingLabel: "Chicken, butter, garlic" },
+              { order: 4, instruction: "Combine roasted potatoes and chicken in the pan, tossing to coat with garlic butter.", ingLabel: "Pan combination" }
+            ]
+          },
+          {
+            id: "rec_005",
+            title: "Double Beef Cheddar Rice Bowl",
+            baseCalories: 780,
+            baseProtein: 55,
+            baseCarbs: 65,
+            baseFats: 32,
+            sugar: 1,
+            fiber: 2,
+            sodium: 620,
+            potassium: 540,
+            baseWeight: 600,
+            tags: ["contains_animal_products", "contains_beef"],
+            ingredients: [
+              { name: "Beef Ribeye (Raw)", quantity: 250, unit: "g" },
+              { name: "White Rice (Raw)", quantity: 100, unit: "g" },
+              { name: "Cheddar Cheese (Dairy)", quantity: 30, unit: "g" }
+            ],
+            steps: [
+              { order: 1, instruction: "Cook 100g White Rice in a cooker.", ingLabel: "White rice" },
+              { order: 2, instruction: "Pan sear 250g Beef Ribeye until medium-rare, then slice.", ingLabel: "Beef Ribeye" },
+              { order: 3, instruction: "Lay beef over hot rice and top with 30g Cheddar Cheese to melt.", ingLabel: "Cheddar cheese" }
+            ]
+          }
+        ]
+      },
+      "@HealthyEats_Sam": {
+        username: "@HealthyEats_Sam",
+        avatarLetter: "S",
+        bio: "Vegan nutrition expert. Recreating comfort foods with plant-based macros.",
+        posts: 12,
+        followers: "89.2k",
+        rating: 4.9,
+        highlights: ["Vegan Pesto", "Zoodles", "High Fiber"],
+        recipesList: [
+          {
+            id: "rec_003",
+            title: "Vegan Creamy Avocado Pesto Zoodles",
+            baseCalories: 310,
+            baseProtein: 12,
+            baseCarbs: 28,
+            baseFats: 18,
+            sugar: 5,
+            fiber: 10,
+            sodium: 210,
+            potassium: 590,
+            baseWeight: 350,
+            tags: ["is_vegetarian", "is_vegan", "is_halal"],
+            ingredients: [
+              { name: "Zucchini (Zoodles)", quantity: 200, unit: "g" },
+              { name: "Avocado (Raw)", quantity: 80, unit: "g" },
+              { name: "Broccoli (Raw)", quantity: 60, unit: "g" },
+              { name: "Pine Nuts", quantity: 10, unit: "g" }
+            ],
+            steps: [
+              { order: 1, instruction: "Spiralize 200g Zucchini into zoodles and steam 60g Broccoli.", ingLabel: "Zucchini, broccoli" },
+              { order: 2, instruction: "Blend 80g Avocado, pine nuts, basil, and salt to form a creamy pesto.", ingLabel: "Avocado, pine nuts" },
+              { order: 3, instruction: "Toss zoodles and broccoli with pesto, serving chilled.", ingLabel: "Pesto mix" }
+            ]
+          }
+        ]
+      },
+      "@MyProfile": {
+        username: "@MyProfile",
+        avatarLetter: "M",
+        bio: "My Personal Account. Tracking daily targets and saving recipes to the vault.",
+        posts: 0,
+        followers: "12",
+        rating: 5.0,
+        highlights: ["Vault Saves", "Logs"],
+        recipesList: []
+      }
+    };
+
+    const reelsDataset = [
+      {
+        videoId: "rec_001",
+        creatorName: "@ChefDietician_Alex",
+        title: "Fluffy High Protein Pancake Tower 🥞",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-preparing-a-healthy-pancake-breakfast-41584-large.mp4",
+        calories: 390,
+        protein: 38,
+        carbs: 45,
+        fats: 6,
+        likes: 12400
+      },
+      {
+        videoId: "rec_002",
+        creatorName: "@BulkGains_Greg",
+        title: "Garlic Butter Chicken Thigh & Potatoes 🍗",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-frying-diced-chicken-breast-meat-in-a-pan-42861-large.mp4",
+        calories: 610,
+        protein: 48,
+        carbs: 52,
+        fats: 22,
+        likes: 42100
+      },
+      {
+        videoId: "rec_003",
+        creatorName: "@HealthyEats_Sam",
+        title: "Vegan Creamy Avocado Pesto Zoodles 🥑",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-vegetables-being-chopped-on-a-wooden-board-41979-large.mp4",
+        calories: 310,
+        protein: 12,
+        carbs: 28,
+        fats: 18,
+        likes: 8900
+      }
+    ];
+
+    // --- USER PROFILE GLOBAL STATE ---
+    let userState = {
+      age: 25,
+      sex: 'male',
+      height: 180,
+      weight: 80,
+      activityLevel: 1.55,
+      goal: 'cut',
+      dietaryMode: 'none',
+
+      targets: {
+        bmr: 1805,
+        tdee: 2798,
+        calories: 2298,
+        protein: 176,
+        carbs: 254,
+        fats: 64
+      },
+
+      logged: {
+        calories: 800,
+        protein: 65,
+        carbs: 90,
+        fats: 20,
+        water: 800
+      },
+
+      meals: {
+        breakfast: [],
+        morningSnack: [],
+        lunch: [],
+        eveningSnack: [],
+        dinner: [],
+        lateNightSnack: []
+      },
+
+      vault: []
+    };
+
+    let activeScaleRecipe = null;
+    let activeLoggingSlot = 'breakfast';
+    let exploreFilter = 'all';
+
+    // Slide DM controller state
+    let activeChatUser = '';
+    const mockChats = {
+      "@ChefDietician_Alex": [
+        { sender: 'them', text: 'Hey there! How is the calorie deficit going?' }
+      ],
+      "@BulkGains_Greg": [
+        { sender: 'them', text: 'Ready to hit some high-protein goals today?' }
+      ],
+      "@HealthyEats_Sam": [
+        { sender: 'them', text: 'Let me know if you need any vegan replacement ideas!' }
+      ]
+    };
+
+    // Toggle theme
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
+    // Reset onboarding view
+    function resetToOnboarding() {
+      document.getElementById('mainAppView').style.display = 'none';
+      document.getElementById('onboardingView').style.display = 'flex';
+      document.querySelectorAll('video').forEach(v => v.pause());
+    }
+
+    // Submit onboarding biometrics
+    function submitOnboarding() {
+      userState.age = parseInt(document.getElementById('obAge').value);
+      userState.sex = document.getElementById('obSex').value;
+      userState.height = parseInt(document.getElementById('obHeight').value);
+      userState.weight = parseInt(document.getElementById('obWeight').value);
+      userState.activityLevel = parseFloat(document.getElementById('obActivity').value);
+      userState.goal = document.getElementById('obGoal').value;
+      userState.dietaryMode = document.getElementById('obDietMode').value;
+
+      document.getElementById('calcSplash').classList.add('active');
+
+      setTimeout(() => {
+        // Mifflin calculations
+        let bmr = 0;
+        if (userState.sex === 'male') {
+          bmr = 10 * userState.weight + 6.25 * userState.height - 5 * userState.age + 5;
+        } else {
+          bmr = 10 * userState.weight + 6.25 * userState.height - 5 * userState.age - 161;
+        }
+
+        const tdee = bmr * userState.activityLevel;
+        let calories = tdee;
+        let proteinPerKg = 2.0;
+
+        if (userState.goal === 'cut') {
+          calories = tdee - 500;
+          proteinPerKg = 2.2;
+        } else if (userState.goal === 'bulk') {
+          calories = tdee + 500;
+          proteinPerKg = 2.2;
+        }
+
+        const protein = proteinPerKg * userState.weight;
+        const proteinKcal = protein * 4;
+        const fatsKcal = calories * 0.25;
+        const fats = fatsKcal / 9;
+        const carbs = (calories - (proteinKcal + fatsKcal)) / 4;
+
+        userState.targets = {
+          bmr: Math.round(bmr),
+          tdee: Math.round(tdee),
+          calories: Math.round(calories),
+          protein: Math.round(protein),
+          carbs: Math.round(carbs),
+          fats: Math.round(fats)
+        };
+
+        // Render dashboard
+        document.getElementById('calcSplash').classList.remove('active');
+        document.getElementById('onboardingView').style.display = 'none';
+        document.getElementById('mainAppView').style.display = 'flex';
+
+        initAppDashboard();
+      }, 800);
+    }
+
+    // App Initialization
+    function initAppDashboard() {
+      renderStoriesTray();
+      renderFeedReels();
+      renderExploreIngredients();
+      renderTrackerSlots();
+      updateRightHUD();
+      bindDoubleTapEvents();
+      bindFeedVideoScrollListeners();
+    }
+
+    // 1. Horizontally scrollable stories followed tray
+    function renderStoriesTray() {
+      const container = document.getElementById('storiesTrayContainer');
+      container.innerHTML = '';
+
+      Object.keys(creatorsDB).forEach(key => {
+        if (key === '@MyProfile') return;
+        const creator = creatorsDB[key];
+
+        const item = document.createElement('div');
+        item.className = 'story-item';
+        item.onclick = () => openCreatorProfile(key);
+
+        item.innerHTML = `
+          <div class="story-ring">
+            <div class="story-inner">${creator.avatarLetter}</div>
+          </div>
+          <span class="story-lbl">${creator.username}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // 2. Feed card elements
+    function renderFeedReels() {
+      const container = document.getElementById('feedPostsContainer');
+      container.innerHTML = '';
+
+      reelsDataset.forEach(reel => {
+        // Hard mask filters
+        if (userState.dietaryMode === 'hindu_no_beef' && reel.videoId === 'rec_005') return;
+        if (userState.dietaryMode === 'vegetarian' && reel.videoId === 'rec_002') return;
+        if (userState.dietaryMode === 'vegan' && reel.videoId !== 'rec_003') return;
+
+        const card = document.createElement('div');
+        card.className = 'instagram-post-card';
+        card.id = `post_${reel.videoId}`;
+
+        const isSaved = userState.vault.includes(reel.videoId);
+        const savedClass = isSaved ? 'post-icon-btn saved' : 'post-icon-btn';
+
+        card.innerHTML = `
+          <div class="post-header">
+            <div class="post-creator" onclick="openCreatorProfile('${reel.creatorName}')">
+              <div class="post-creator-avatar">
+                <div class="post-creator-avatar-inner">${reel.creatorName.charAt(1).toUpperCase()}</div>
+              </div>
+              <span class="post-username">${reel.creatorName}</span>
+            </div>
+            <div style="font-size:1.1rem;cursor:pointer;color:var(--text-sub)">•••</div>
+          </div>
+
+          <div class="post-media-frame">
+            <div class="post-macro-badge">${reel.calories} kcal | P: ${reel.protein}g</div>
+            <!-- double tap animated heart overlay -->
+            <div class="heart-burst-overlay">❤️</div>
+            <video src="${reel.videoUrl}" loop muted playsinline></video>
+          </div>
+
+          <div class="post-action-bar">
+            <div class="post-action-left">
+              <button class="post-icon-btn" onclick="likePost(this, ${reel.likes})">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </button>
+              <button class="post-icon-btn" onclick="openRecipeDetailsDirect('${reel.videoId}', '${reel.creatorName}')">
+                <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              </button>
+              <button class="post-icon-btn" onclick="openMacroScaleModal('${reel.videoId}', '${reel.creatorName}')">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+              </button>
+            </div>
+            <button class="${savedClass}" onclick="toggleVault(this, '${reel.videoId}')">
+              <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+
+          <div class="post-caption-box">
+            <div class="post-likes-count"><span class="likes-txt-val">${(reel.likes/1000).toFixed(1)}k</span> likes</div>
+            <div class="post-desc">
+              <span>${reel.creatorName}</span>${reel.title} - click recipe details or scale portion to update intake targets.
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Double tap triggers heart burst
+    function bindDoubleTapEvents() {
+      const frames = document.querySelectorAll('.post-media-frame');
+      frames.forEach(frame => {
+        let lastTap = 0;
+        frame.addEventListener('click', (e) => {
+          const now = Date.now();
+          if (now - lastTap < 300) {
+            // Trigger double tap
+            const heart = frame.querySelector('.heart-burst-overlay');
+            heart.classList.add('burst');
+            
+            // Increment likes
+            const card = frame.closest('.instagram-post-card');
+            const likeBtn = card.querySelector('.post-action-left button');
+            const likesCountVal = card.querySelector('.likes-txt-val');
+            
+            if (!likeBtn.classList.contains('liked')) {
+              likeBtn.classList.add('liked');
+              // Increment count
+              const currentText = likesCountVal.textContent;
+              if (currentText.includes('k')) {
+                const num = parseFloat(currentText);
+                likesCountVal.textContent = (num + 0.1).toFixed(1) + 'k';
+              }
+            }
+
+            setTimeout(() => {
+              heart.classList.remove('burst');
+            }, 600);
+          }
+          lastTap = now;
+        });
+      });
+    }
+
+    // Auto play videos
+    function bindFeedVideoScrollListeners() {
+      const mainScroll = document.getElementById('mainContent');
+      mainScroll.addEventListener('scroll', () => {
+        const posts = document.querySelectorAll('.instagram-post-card');
+        posts.forEach(post => {
+          const video = post.querySelector('video');
+          if (video) {
+            const rect = video.getBoundingClientRect();
+            // Video is considered in viewport if middle is visible
+            const inView = (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2);
+            if (inView) {
+              if (video.paused) video.play().catch(e => {});
+            } else {
+              video.pause();
+            }
+          }
+        });
+      });
+    }
+
+    function likePost(btn, count) {
+      btn.classList.toggle('liked');
+      const card = btn.closest('.instagram-post-card');
+      const txt = card.querySelector('.likes-txt-val');
+      if (btn.classList.contains('liked')) {
+        txt.textContent = ((count + 1) / 1000).toFixed(1) + 'k';
+      } else {
+        txt.textContent = (count / 1000).toFixed(1) + 'k';
+      }
+    }
+
+    function toggleVault(btn, recipeId) {
+      btn.classList.toggle('saved');
+      const idx = userState.vault.indexOf(recipeId);
+      if (idx === -1) {
+        userState.vault.push(recipeId);
+        triggerConfetti();
+      } else {
+        userState.vault.splice(idx, 1);
+      }
+    }
+
+    // 3. Explore
+    function renderExploreIngredients(query = '') {
+      const container = document.getElementById('exploreIngredientsGrid');
+      container.innerHTML = '';
+
+      rawExploreDB.forEach(item => {
+        if (query && !item.name.toLowerCase().includes(query.toLowerCase())) return;
+        if (exploreFilter === 'vegetarian' && !item.tags.includes('is_vegetarian')) return;
+
+        const card = document.createElement('div');
+        card.className = 'ingredient-card';
+        card.style.background = 'var(--bg-card)';
+        card.style.border = '1px solid var(--border-color)';
+        card.style.borderRadius = '4px';
+        card.style.padding = '14px';
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.gap = '8px';
+
+        card.innerHTML = `
+          <h4 style="font-size:0.85rem;font-weight:700">${item.name}</h4>
+          <div style="font-size:0.75rem;color:var(--text-sub)">
+            <div>Cal: ${item.cal} kcal</div>
+            <div>Prot: ${item.p}g | Carb: ${item.c}g</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span style="font-size:0.6rem;color:var(--text-sub)">per 100g</span>
+            <button class="water-plus-btn" style="width:22px;height:22px;font-size:0.7rem" onclick="openDirectLogSlot('${item.name}', ${item.cal}, ${item.p}, ${item.c}, ${item.f})">+</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function searchIngredients(val) {
+      renderExploreIngredients(val);
+    }
+
+    function filterExploreTags(mode) {
+      exploreFilter = mode;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      if (mode === 'all') {
+        document.getElementById('chipAllFoods').classList.add('active');
+      } else {
+        document.getElementById('chipVegFoods').classList.add('active');
+      }
+      renderExploreIngredients();
+    }
+
+    // 4. Tracker Slots
+    function renderTrackerSlots() {
+      const container = document.getElementById('trackerMealSlotsList');
+      container.innerHTML = '';
+
+      const slots = ['breakfast', 'morningSnack', 'lunch', 'eveningSnack', 'dinner', 'lateNightSnack'];
+
+      slots.forEach(slot => {
+        const card = document.createElement('div');
+        card.className = 'meal-slot-item';
+        card.style.background = 'var(--bg-card)';
+        card.style.border = '1px solid var(--border-color)';
+        card.style.padding = '14px 20px';
+        card.style.display = 'flex';
+        card.style.justifyContent = 'space-between';
+        card.style.alignItems = 'center';
+
+        const items = userState.meals[slot] || [];
+        const descText = items.length > 0 
+          ? items.map(i => `${i.name} (${i.grams}g)`).join(', ') 
+          : 'No items logged';
+
+        card.innerHTML = `
+          <div>
+            <div style="font-weight:700;font-size:0.9rem">${slot.toUpperCase()}</div>
+            <div style="font-size:0.75rem;color:var(--text-sub);margin-top:2px">${descText}</div>
+          </div>
+          <button class="primary-btn" style="padding:6px 12px;font-size:0.7rem" onclick="triggerSearchSlotLog('${slot}')">Add</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 5. Creator Profile Page Tabbed Grid Layout
+    function openCreatorProfile(username) {
+      switchNav('viewProfile');
+
+      const container = document.getElementById('profilePageContainer');
+      container.innerHTML = '';
+
+      const creator = creatorsDB[username];
+      if (!creator) return;
+
+      // Stars
+      let starsHtml = '';
+      const fullStars = Math.floor(creator.rating);
+      for (let i = 0; i < 5; i++) {
+        starsHtml += (i < fullStars) ? '★' : '☆';
+      }
+
+      // Highlights
+      let highlightsHtml = '';
+      creator.highlights.forEach(h => {
+        highlightsHtml += `
+          <div class="highlight-item">
+            <div class="highlight-avatar">${h.charAt(0)}</div>
+            <span class="highlight-lbl">${h}</span>
+          </div>
+        `;
+      });
+
+      // Grid items
+      let gridHtml = '';
+      creator.recipesList.forEach(rec => {
+        gridHtml += `
+          <div class="portfolio-grid-item" onclick="openRecipeDetailsDirect('${rec.id}', '${username}')">
+            <div class="portfolio-grid-item-overlay">
+              <span>View Recipe</span>
+            </div>
+            <div class="portfolio-grid-item-cover">
+              <span class="portfolio-grid-title">${rec.title}</span>
+              <span class="portfolio-grid-item-cover-stats">${rec.baseCalories} kcal | P: ${rec.baseProtein}g</span>
+            </div>
+          </div>
+        `;
+      });
+
+      if (creator.recipesList.length === 0) {
+        gridHtml = `<div style="grid-column: span 3; text-align:center; color:var(--text-sub); padding:6px;">No posts published yet.</div>`;
+      }
+
+      container.innerHTML = `
+        <div class="profile-card">
+          <div class="profile-avatar-wrapper">
+            <div class="profile-avatar-inner">${creator.avatarLetter}</div>
+          </div>
+          <div class="profile-details-column">
+            <div class="profile-username-row">
+              <h2 class="profile-username-title">${creator.username}</h2>
+            </div>
+            <div class="profile-stats-row">
+              <div class="profile-stat-item"><span>${creator.posts}</span> posts</div>
+              <div class="profile-stat-item"><span>${creator.followers}</span> followers</div>
+              <div class="profile-stat-item" style="display:flex;gap:6px;align-items:center;">
+                <span>Rating:</span> 
+                <span class="profile-stars">${starsHtml}</span>
+              </div>
+            </div>
+            <p class="profile-bio" style="font-size:0.85rem">${creator.bio}</p>
+          </div>
+        </div>
+
+        <!-- Highlights horizontal list -->
+        <div class="highlights-row">
+          ${highlightsHtml}
+        </div>
+
+        <!-- tabbed grids -->
+        <div class="profile-grid-tabs">
+          <button class="grid-tab-btn active">Posts</button>
+          <button class="grid-tab-btn">Reels</button>
+          <button class="grid-tab-btn">Saved</button>
+        </div>
+
+        <div class="portfolio-grid">
+          ${gridHtml}
+        </div>
+      `;
+    }
+
+    // 6. Recipe instructions Details Page Router
+    function openRecipeDetailsDirect(recipeId, creatorUsername) {
+      switchNav('viewRecipeDetails');
+
+      const container = document.getElementById('recipeDetailsContainer');
+      container.innerHTML = '';
+
+      const creator = creatorsDB[creatorUsername];
+      if (!creator) return;
+
+      const recipe = creator.recipesList.find(r => r.id === recipeId);
+      if (!recipe) {
+        // Fallback checks
+        let found = null;
+        Object.keys(creatorsDB).forEach(k => {
+          const r = creatorsDB[k].recipesList.find(rec => rec.id === recipeId);
+          if (r) found = r;
+        });
+        if (found) return renderRecipeScreen(found, creatorUsername);
+        return;
+      }
+
+      renderRecipeScreen(recipe, creatorUsername);
+    }
+
+    function renderRecipeScreen(recipe, creatorUsername) {
+      const container = document.getElementById('recipeDetailsContainer');
+
+      // Ingredients row
+      let ingHtml = '';
+      recipe.ingredients.forEach(ing => {
+        ingHtml += `
+          <div class="ingredient-list-row">
+            <span>${ing.name}</span>
+            <span style="font-weight:700;color:var(--primary)">${ing.quantity} ${ing.unit}</span>
+          </div>
+        `;
+      });
+
+      // Steps row
+      let stepsHtml = '';
+      recipe.steps.forEach(step => {
+        stepsHtml += `
+          <div class="step-timeline-row">
+            <div class="step-badge">${step.order}</div>
+            <div class="step-desc-wrapper">
+              <span class="step-uses-tag">Uses: ${step.ingLabel}</span>
+              <p style="font-size:0.85rem;line-height:1.4">${step.instruction}</p>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = `
+        <div class="recipe-screen-header">
+          <div>
+            <h2 style="font-family:'Outfit';font-size:1.5rem">${recipe.title}</h2>
+            <span style="font-size:0.8rem;color:var(--text-sub)">Published by <strong style="color:var(--primary)">${creatorUsername}</strong></span>
+          </div>
+          <button class="back-btn" onclick="openCreatorProfile('${creatorUsername}')">← Back to Profile</button>
+        </div>
+
+        <div class="recipe-columns">
+          <div class="recipe-column-card">
+            <h3 class="recipe-column-title">Ingredients checklist</h3>
+            <div>${ingHtml}</div>
+          </div>
+          <div class="recipe-column-card">
+            <h3 class="recipe-column-title">Cooking steps</h3>
+            <div>${stepsHtml}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Dynamic Navigation state
+    function switchNav(panelId, el = null) {
+      // Show shimmer skeleton loaders
+      document.getElementById('shimmerLoader').style.display = 'flex';
+      document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+
+      setTimeout(() => {
+        document.getElementById('shimmerLoader').style.display = 'none';
+        document.getElementById(panelId).classList.add('active');
+
+        if (el) {
+          document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+          el.classList.add('active');
+        } else {
+          document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+          if (panelId === 'viewFeed') {
+            document.querySelectorAll('.menu-item')[0].classList.add('active');
+          } else if (panelId === 'viewExplore') {
+            document.querySelectorAll('.menu-item')[1].classList.add('active');
+          } else if (panelId === 'viewTracker') {
+            document.querySelectorAll('.menu-item')[2].classList.add('active');
+          } else if (panelId === 'viewProfile') {
+            document.getElementById('sidebarProfileBtn').classList.add('active');
+          }
+        }
+      }, 200); // 200ms skeleton transition
+
+      // Pause all feeds
+      if (panelId !== 'viewFeed') {
+        document.querySelectorAll('video').forEach(v => v.pause());
+      }
+    }
+
+    // --- SLIDER VALUE MODIFIER ---
+    function openMacroScaleModal(recipeId, creatorUsername) {
+      let recipe = null;
+      const creator = creatorsDB[creatorUsername];
+      if (creator) {
+        recipe = creator.recipesList.find(r => r.id === recipeId);
+      }
+
+      if (!recipe) {
+        recipe = {
+          title: "Meal recipe",
+          baseCalories: 500,
+          baseProtein: 40,
+          baseCarbs: 50,
+          baseFats: 10,
+          sugar: 3,
+          fiber: 5,
+          sodium: 300,
+          potassium: 400,
+          baseWeight: 400
+        };
+      }
+
+      activeScaleRecipe = recipe;
+
+      document.getElementById('scaleModalRecipeTitle').textContent = recipe.title;
+      document.getElementById('scaleModalSlider').value = recipe.baseWeight;
+      document.getElementById('scaleSliderLabelVal').textContent = recipe.baseWeight + 'g';
+
+      calculateSliderMacros(1.0);
+      document.getElementById('scaleMacrosModal').classList.add('active');
+    }
+
+    function onScaleSliderChange() {
+      const sliderVal = parseFloat(document.getElementById('scaleModalSlider').value);
+      document.getElementById('scaleSliderLabelVal').textContent = sliderVal + 'g';
+
+      const mult = sliderVal / activeScaleRecipe.baseWeight;
+      calculateSliderMacros(mult);
+    }
+
+    function calculateSliderMacros(multiplier) {
+      document.getElementById('scCal').textContent = Math.round(activeScaleRecipe.baseCalories * multiplier) + ' kcal';
+      document.getElementById('scProtein').textContent = Math.round(activeScaleRecipe.baseProtein * multiplier) + 'g';
+      document.getElementById('scCarb').textContent = Math.round(activeScaleRecipe.baseCarbs * multiplier) + 'g';
+      document.getElementById('scFats').textContent = Math.round(activeScaleRecipe.baseFats * multiplier) + 'g';
+      
+      // Extended details
+      document.getElementById('scSugar').textContent = Math.round(activeScaleRecipe.sugar * multiplier) + 'g';
+      document.getElementById('scFiber').textContent = Math.round(activeScaleRecipe.fiber * multiplier) + 'g';
+      document.getElementById('scSodium').textContent = Math.round(activeScaleRecipe.sodium * multiplier) + 'mg';
+      document.getElementById('scPotassium').textContent = Math.round(activeScaleRecipe.potassium * multiplier) + 'mg';
+    }
+
+    function logScaledItem() {
+      const sliderVal = parseFloat(document.getElementById('scaleModalSlider').value);
+      const mult = sliderVal / activeScaleRecipe.baseWeight;
+
+      const cal = Math.round(activeScaleRecipe.baseCalories * mult);
+      const p = Math.round(activeScaleRecipe.baseProtein * mult);
+      const c = Math.round(activeScaleRecipe.baseCarbs * mult);
+      const f = Math.round(activeScaleRecipe.baseFats * mult);
+
+      userState.logged.calories += cal;
+      userState.logged.protein += p;
+      userState.logged.carbs += c;
+      userState.logged.fats += f;
+
+      userState.meals.breakfast.push({
+        name: activeScaleRecipe.title,
+        grams: sliderVal
+      });
+
+      updateRightHUD();
+      renderTrackerSlots();
+      closeModal('scaleMacrosModal');
+      triggerConfetti();
+
+      switchNav('viewTracker');
+    }
+
+    // Refresh Rings HUD Widget on Right panel
+    function updateRightHUD() {
+      const calPct = Math.min(100, (userState.logged.calories / userState.targets.calories) * 100);
+      const proteinPct = Math.min(100, (userState.logged.protein / userState.targets.protein) * 100);
+      const carbsPct = Math.min(100, (userState.logged.carbs / userState.targets.carbs) * 100);
+
+      document.getElementById('rightRingCal').style.strokeDashoffset = 263.89 - (calPct / 100) * 263.89;
+      document.getElementById('rightRingProtein').style.strokeDashoffset = 201.06 - (proteinPct / 100) * 201.06;
+      document.getElementById('rightRingCarbs').style.strokeDashoffset = 138.23 - (carbsPct / 100) * 138.23;
+
+      document.getElementById('rightTxtRemainingKcal').textContent = Math.max(0, userState.targets.calories - userState.logged.calories);
+      
+      document.getElementById('rightTxtCal').textContent = `${userState.logged.calories} / ${userState.targets.calories} kcal`;
+      document.getElementById('rightTxtProtein').textContent = `${userState.logged.protein} / ${userState.targets.protein}g`;
+      document.getElementById('rightTxtCarbs').textContent = `${userState.logged.carbs} / ${userState.targets.carbs}g`;
+      document.getElementById('rightTxtFats').textContent = `${userState.logged.fats} / ${userState.targets.fats}g`;
+
+      document.getElementById('rightTxtWater').textContent = `${userState.logged.water} / 3000 mL`;
+    }
+
+    function openDirectLogSlot(name, cal, p, c, f) {
+      userState.logged.calories += cal;
+      userState.logged.protein += p;
+      userState.logged.carbs += c;
+      userState.logged.fats += f;
+
+      userState.meals.dinner.push({
+        name: name,
+        grams: 100
+      });
+
+      updateRightHUD();
+      renderTrackerSlots();
+      triggerConfetti();
+
+      switchNav('viewTracker');
+    }
+
+    function addWater() {
+      userState.logged.water += 250;
+      updateRightHUD();
+    }
+
+    // Confetti canvas effects
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      const colors = ['#f09433', '#e6683c', '#dc2743', '#0095f6', '#4cd964'];
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
+          radius: Math.random() * 4 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 15,
+          gravity: 0.3,
+          alpha: 1.0
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.alpha -= 0.015;
+
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+
+    // --- DIRECT MESSAGES CONTROLLER ---
+    function toggleDMsDrawer() {
+      const drawer = document.getElementById('dmsDrawerPanel');
+      drawer.classList.toggle('active');
+    }
+
+    function startDirectChat(username) {
+      activeChatUser = username;
+      document.getElementById('directChatBox').style.display = 'flex';
+      document.getElementById('chatBoxUsername').textContent = username;
+      renderChatMessages();
+    }
+
+    function renderChatMessages() {
+      const list = document.getElementById('chatBoxMessagesList');
+      list.innerHTML = '';
+
+      const messages = mockChats[activeChatUser] || [];
+      messages.forEach(msg => {
+        const bubble = document.createElement('div');
+        bubble.style.padding = '8px 12px';
+        bubble.style.borderRadius = '12px';
+        bubble.style.maxWidth = '80%';
+        bubble.style.fontSize = '0.75rem';
+        bubble.style.lineHeight = '1.35';
+
+        if (msg.sender === 'me') {
+          bubble.style.alignSelf = 'flex-end';
+          bubble.style.backgroundColor = 'var(--primary)';
+          bubble.style.color = '#fff';
+        } else {
+          bubble.style.alignSelf = 'flex-start';
+          bubble.style.backgroundColor = 'var(--border-color)';
+          bubble.style.color = 'var(--text-main)';
+        }
+
+        bubble.textContent = msg.text;
+        list.appendChild(bubble);
+      });
+      
+      // Scroll to bottom
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInputMessage');
+      const val = input.value.trim();
+      if (!val) return;
+
+      if (!mockChats[activeChatUser]) {
+        mockChats[activeChatUser] = [];
+      }
+
+      mockChats[activeChatUser].push({
+        sender: 'me',
+        text: val
+      });
+
+      input.value = '';
+      renderChatMessages();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Set initial dark theme
+    window.addEventListener('load', () => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    });
+  </script>
+</body>
+</html>
